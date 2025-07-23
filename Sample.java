@@ -5,11 +5,14 @@
 
 
 // Your code here along with comments explaining your approach
+//Idea is to create a single linked list of custom nodes. This custom node will have 2 properties.
+//One property refers to value and the other refers to min value it holds till all the nodes present before it
+//While Pushing a value  , we  create this node according to min value found
 class MinStack {
 
    StackNode headnode;
     // Time Complexity :  O(1)
-    // Space Complexity : O(1)
+    // Space Complexity : O(n)
     public MinStack() {
      headnode = new StackNode(-1, Integer.MAX_VALUE);
     }
@@ -71,4 +74,55 @@ class StackNode{
  * obj.pop();
  * int param_3 = obj.top();
  * int param_4 = obj.getMin();
+ */
+
+
+ //Idea is to use List of LinkedLists as HashSet.These individual LinkedLists act as buckets.
+ //The number of buckets are chosen to avoid collisions.
+ //We use hashfunction to categorize the incoming key into respective bucket.
+class MyHashSet {
+    private int size = 10000;
+    private List<LinkedList<Integer>> buckets; 
+
+    public MyHashSet() {
+        buckets = new ArrayList<>(size); 
+        for (int i = 0; i < size; i++) {
+            buckets.add(new LinkedList<>()); // Adding empty LinkedList to each bucket
+        }
+    }
+
+
+    //TimeComplexity: average-O(1)
+    //SpaceComplexity: average-O(1)
+    public void add(int key) {
+        int bucketIndex = key % size;
+        LinkedList<Integer> bucket = buckets.get(bucketIndex);
+        if (!bucket.contains(key)) {
+            bucket.add(key);
+        }
+    }
+    //TimeComplexity: average-O(1)
+    //SpaceComplexity: average-O(1)
+    public void remove(int key) {
+        int bucketIndex = key % size;
+        LinkedList<Integer> bucket = buckets.get(bucketIndex);
+         if (bucket.contains(key)) {
+        bucket.remove((Integer) key); 
+         }
+    }
+    //TimeComplexity: average-O(1)
+    //SpaceComplexity: average-O(1)
+    public boolean contains(int key) {
+        int bucketIndex = key % size;
+        LinkedList<Integer> bucket = buckets.get(bucketIndex);
+        return bucket.contains(key);
+    }
+}
+
+/**
+ * Your MyHashSet object will be instantiated and called as such:
+ * MyHashSet obj = new MyHashSet();
+ * obj.add(key);
+ * obj.remove(key);
+ * boolean param_3 = obj.contains(key);
  */
